@@ -1,0 +1,9 @@
+##############################
+# Welcome to NelsonKent Robots.txt File #
+# Last Updated 01/24/2024 #
+##############################
+
+User-agent: *
+Allow: /*?page=*
+
+Sitemap: https://nelsonkent.github.io/sitemap_index.xml
