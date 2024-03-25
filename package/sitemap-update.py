@@ -10,7 +10,7 @@ def generate_sitemap_index(directory, sitemap_index_path=None, tree=None, root=N
         tree = ET.parse(sitemap_index_path)
         root = tree.getroot()
     # Get existing URLs from the sitemap index
-    existing_urls = [elem.text for elem in root.findall("{*}sitemap/{*}loc")]
+    existing_urls = [elem.text for elem in root.findall("{*}url/{*}loc")]
 #     print(existing_urls)
 
     # Iterate through HTML files in the directory
@@ -25,7 +25,7 @@ def generate_sitemap_index(directory, sitemap_index_path=None, tree=None, root=N
                 last_modified = datetime.datetime.fromtimestamp(os.path.getmtime(file_path)).strftime('%Y-%m-%d')
 
                 # Create sitemap entry
-                sitemap_elem = ET.SubElement(root, "sitemap")
+                sitemap_elem = ET.SubElement(root, "url")
                 loc_elem = ET.SubElement(sitemap_elem, "loc")
                 loc_elem.text = file_url
                 print(file_url)
