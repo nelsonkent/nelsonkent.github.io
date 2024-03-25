@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Compare and Merge YAML Files</title>
+    <meta name="description" content="Effortlessly compare and merge YAML files with our intuitive online tool. Easily spot key differences between two YAML files and seamlessly merge missing keys. Streamline your workflow and boost productivity now!">
+    <meta name="keywords" content="YAML, YAML file comparison, YAML merge, YAML diff, online tool, productivity tool, compare YAML files, merge YAML files, analyze YAML files, YAML editor, developer tool">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        textarea {
+            width: 45%;
+            height: 300px;
+            padding: 10px;
+            margin-right: 10px;
+            border: 1px solid #ccc;
+            resize: none;
+        }
+        #output {
+            margin-top: 20px;
+            border: 1px solid #ccc;
+            padding: 10px;
+            overflow: auto;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+<h1>Compare and Merge YAML Files</h1>
+<textarea id="yaml1" placeholder="Paste or drag & drop first YAML file here"></textarea>
+<textarea id="yaml2" placeholder="Paste or drag & drop second YAML file here"></textarea>
+<div>
+    <button onclick="compareAndMergeYAML()">Compare & Merge</button>
+</div>
+<div id="output"></div>
+<script>
+  function compareAndMergeYAML() {
+    var yaml1 = document.getElementById('yaml1').value;
+    var yaml2 = document.getElementById('yaml2').value;
+
+    var obj1 = jsyaml.load(yaml1);
+    var obj2 = jsyaml.load(yaml2);
+
+    var diff = getKeyDifferences(obj1, obj2);
+
+    var outputDiv = document.getElementById('output');
+    outputDiv.innerHTML = '';
+    if (diff.length > 0) {
+      outputDiv.innerText = 'Key Differences:\n\n';
+      outputDiv.innerText += [...new Set(diff)].join('\n');
+      mergeYAML(obj1, obj2);
+    } else {
+      outputDiv.innerText = 'No key differences found.';
+    }
+  }
+
+  function getKeyDifferences(obj1, obj2, path = '') {
+    var keys1 = Object.keys(obj1);
+    var keys2 = Object.keys(obj2);
+    var diff = [];
+
+    // Find keys present in obj1 but not in obj2
+    keys1.forEach(key => {
+      var newPath = path ? path + '.' + key : key;
+      if (!keys2.includes(key)) {
+        diff.push('Key added: ' + newPath);
+      } else if (typeof obj1[key] === 'object' && typeof obj2[key] === 'object') {
+        diff.push(...getKeyDifferences(obj1[key], obj2[key], newPath));
+      }
+    });
+
+    // Find keys present in obj2 but not in obj1
+    keys2.forEach(key => {
+      var newPath = path ? path + '.' + key : key;
+      if (!keys1.includes(key)) {
+        diff.push('Key deleted: ' + newPath);
+      } else if (typeof obj1[key] === 'object' && typeof obj2[key] === 'object') {
+        diff.push(...getKeyDifferences(obj1[key], obj2[key], newPath));
+      }
+    });
+
+    return diff;
+  }
+
+  function mergeYAML(obj1, obj2, path = '') {
+    for (var key in obj2) {
+      if (!(key in obj1)) {
+        obj1[key] = obj2[key];
+      } else if (typeof obj1[key] === 'object' && typeof obj2[key] === 'object') {
+        mergeYAML(obj1[key], obj2[key], key);
+      }
+    }
+    if(path == ''){
+      var preElements = document.getElementsByTagName("pre");
+      for (var i = preElements.length - 1; i >= 0; i--) {
+        var preElement = preElements[i];
+        preElement.parentNode.removeChild(preElement);
+      }
+    // 创建一个 <pre> 元素
+    var preElement = document.createElement("pre");
+
+    // 设置元素的文本内容，包含空格和换行符
+    preElement.innerHTML = `\n\n<h3>Merged YAML:</h3>` + jsyaml.dump(obj1);
+
+    // 将 <pre> 元素添加到页面中的 body 元素中
+    document.body.appendChild(preElement);
+    }
+  }
+</script>
+<!-- Include js-yaml library -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/js-yaml/4.1.0/js-yaml.js"></script>
+</body>
+</html>

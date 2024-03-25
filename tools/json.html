@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JSON 解析器</title>
+    <style>
+        /* 样式可以根据需要进行修改 */
+        body {
+            font-family: Arial, sans-serif;
+        }
+        textarea {
+            width: 100%;
+            height: 200px;
+            margin-bottom: 10px;
+        }
+        #result {
+            white-space: pre-wrap;
+        }
+        .button {
+            background-color: #4CAF50;
+            border: none;
+            color: white;
+            padding: 15px 30px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        .button:hover {
+            background-color: #45a049;
+        }
+        #copySuccess {
+            position: fixed;
+            top: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #4CAF50;
+            color: white;
+            padding: 15px 30px;
+            border-radius: 5px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+<h1>JSON 解析器</h1>
+<label for="json-input">输入 JSON：</label>
+<textarea id="json-input"></textarea>
+<button class="button" onclick="parseJSON()">解析</button>
+<h2>解析结果：</h2>
+<pre id="result"></pre>
+<button id="copyButton" class="button" style="display: none;" onclick="copyResult()">复制结果</button>
+<div id="copySuccess">结果已复制到剪贴板</div>
+
+<script>
+  function parseJSON() {
+    var jsonInput = document.getElementById('json-input').value;
+    try {
+      var parsedResult = JSON.parse(jsonInput);
+      document.getElementById('result').innerText = JSON.stringify(parsedResult, null, 2);
+      document.getElementById('copyButton').style.display = 'inline-block';
+    } catch (error) {
+      document.getElementById('result').innerText = "解析失败：\n" + error.message;
+      document.getElementById('copyButton').style.display = 'none';
+    }
+  }
+
+  function copyResult() {
+    var resultText = document.getElementById('result').innerText;
+    navigator.clipboard.writeText(resultText)
+      .then(() => {
+        document.getElementById('copySuccess').style.display = 'block';
+        setTimeout(() => {
+          document.getElementById('copySuccess').style.display = 'none';
+        }, 3000);
+      })
+      .catch(err => console.error('复制失败：', err));
+  }
+</script>
+</body>
+</html>

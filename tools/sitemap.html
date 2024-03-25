@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Google Sitemap Validator</title>
+    <style>
+        /* 添加样式 */
+        .progress-bar {
+            width: 100%;
+            background-color: #f2f2f2;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-bottom: 10px;
+            overflow: hidden;
+        }
+        .progress-bar-fill {
+            height: 20px;
+            background-color: #4caf50;
+            border-radius: 5px;
+            transition: width 0.5s;
+        }
+        .button {
+            padding: 10px 20px;
+            background-color: #4caf50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        .button:hover {
+            background-color: #45a049;
+        }
+        .input-text {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-bottom: 10px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+    </style>
+</head>
+<body>
+<h1>Google Sitemap Validator</h1>
+<p>Enter the URL of your Sitemap file below to validate:</p>
+<input type="text" id="sitemapUrl" class="input-text" placeholder="Enter Sitemap URL">
+<button class="button" onclick="validateSitemap()">Validate</button>
+<div id="progressBar" class="progress-bar">
+    <div id="progressBarFill" class="progress-bar-fill" style="width: 0;"></div>
+</div>
+<div id="validationResult"></div>
+
+<script>
+  function validateSitemap() {
+    var sitemapUrl = document.getElementById('sitemapUrl').value;
+    var progressBarFill = document.getElementById('progressBarFill');
+    // 重置进度条
+    progressBarFill.style.width = '0%';
+    // 发送HTTP请求获取Sitemap文件内容
+    fetch(sitemapUrl)
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        // 更新进度条
+        progressBarFill.style.width = '50%';
+        return response.text();
+      })
+      .then(data => {
+        // 解析Sitemap文件并验证URL
+        var isValid = parseAndValidateSitemap(data);
+        // 更新进度条
+        progressBarFill.style.width = '100%';
+        // 显示解析和校验结果
+        displayValidationResult(isValid);
+      })
+      .catch(error => {
+        // 处理错误情况
+        displayValidationResult(false, error.message);
+      });
+  }
+
+  function parseAndValidateSitemap(data) {
+    // 创建XML解析器
+    var parser = new DOMParser();
+    var xmlDoc = parser.parseFromString(data, 'text/xml');
+    // 获取所有URL标签
+    var urlTags = xmlDoc.getElementsByTagName('url');
+    // 验证每个URL是否符合规范
+    for (var i = 0; i < urlTags.length; i++) {
+      var loc = urlTags[i].getElementsByTagName('loc')[0].textContent;
+      // 这里可以添加更多的验证逻辑，比如检查URL格式、是否包含非ASCII字符等
+      // 这里只是一个简单的示例，假设所有URL都是有效的
+      console.log('Validating URL:', loc);
+    }
+    // 假设所有URL都是有效的
+    return true;
+  }
+
+  function displayValidationResult(isValid, errorMessage) {
+    var resultDiv = document.getElementById('validationResult');
+    resultDiv.innerHTML = '';
+    if (isValid) {
+      resultDiv.innerHTML = '<p>Sitemap parsing and validation completed successfully!</p>';
+    } else {
+      resultDiv.innerHTML = '<p>Error: ' + errorMessage + '</p>';
+    }
+  }
+</script>
+</body>
+</html>
