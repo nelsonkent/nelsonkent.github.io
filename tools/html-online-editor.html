@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HTML Online Editor</title>
+    <meta name="description" content="Free online HTML, CSS, and JavaScript editor. Write and test your code in real-time.">
+    <meta name="keywords" content="HTML, CSS, JavaScript, online editor, code editor, web development">
+    <meta name="author" content="Nelson Kent">
+    <meta property="og:title" content="HTML Online Editor">
+    <meta property="og:description" content="Free online HTML, CSS, and JavaScript editor. Write and test your code in real-time.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="http://metabyte.cloudns.be/tools/html-online-editor">
+    <style>
+        body, html {
+            height: 100%;
+            margin: 0;
+            overflow: hidden;
+        }
+        textarea {
+            width: 50%;
+            height: 100%;
+            border: none;
+            resize: none;
+            float: left;
+            padding: 10px;
+            box-sizing: border-box;
+        }
+        iframe {
+            width: 50%;
+            height: 100%;
+            border: none;
+            float: left;
+            box-sizing: border-box;
+        }
+    </style>
+</head>
+<body>
+
+<textarea id="code" placeholder="Enter your HTML, CSS, and JavaScript code here..." spellcheck="false"></textarea>
+<iframe id="output"></iframe>
+
+<script>
+  const codeTextarea = document.getElementById('code');
+  const outputIframe = document.getElementById('output');
+
+  codeTextarea.addEventListener('input', () => {
+    const code = codeTextarea.value;
+    const doc = outputIframe.contentWindow.document;
+
+    doc.open();
+    doc.write(code);
+    doc.close();
+  });
+</script>
+
+</body>
+</html>
