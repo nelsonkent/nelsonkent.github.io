@@ -23,9 +23,9 @@ def generate_sitemap_index(directory, sitemap_index_path=None, tree=None, root=N
             pattern = r'^.*?nelsonkent\.github\.io'
             new_path = re.sub(pattern, '', directory)
 
-            file_url = f"https://metabyte.cloudns.be/{filename}"
+            file_url = f"https://nelsonkent.github.io/{filename}"
             if new_path:
-                file_url = f"https://metabyte.cloudns.be{new_path}/{filename}"
+                file_url = f"https://nelsonkent.github.io{new_path}/{filename}"
             print(file_url)
             if file_url not in existing_urls:
                 file_path = os.path.join(directory, filename)
