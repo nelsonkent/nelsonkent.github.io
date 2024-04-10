@@ -31,3 +31,19 @@ scriptElement.onload = function() {
     $('#headerContainer').load('/blogs/header.html');
   });
 };
+
+
+// // Remove existing <link> element with rel="shortcut icon" and type="image/x-icon"
+// var existingLink = document.querySelector('link[rel="shortcut icon"]');
+// if (existingLink) {
+//   existingLink.remove();
+// }
+//
+// // Create a new <link> element for the custom icon
+// var newLink = document.createElement('link');
+// newLink.rel = 'icon';
+// newLink.href = 'https://metabyte.cloudns.be/logo.png';
+// newLink.type = 'image/png';
+//
+// // Append the new <link> element to the document head
+// document.head.appendChild(newLink);
