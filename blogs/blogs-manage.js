@@ -31,3 +31,29 @@ scriptElement.onload = function() {
     $('#headerContainer').load('/blogs/header.html');
   });
 };
+
+// Function to include HTML content from a URL
+function includeHTML(url) {
+  debugger;
+  fetch(url)
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      return response.text();
+    })
+    .then(html => {
+      const tempContainer = document.createElement('div');
+      tempContainer.innerHTML = html;
+
+      // Append the contents of the temporary container to the body
+      document.body.appendChild(tempContainer);
+
+    })
+    .catch(error => {
+      console.error('Error fetching HTML:', error);
+    });
+}
+
+// Call the function to include HTML content from an external URL
+includeHTML('/blogs/comment.html');
