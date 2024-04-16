@@ -47,6 +47,13 @@ function includeHTML(url) {
 
       // Append the contents of the temporary container to the body
       document.body.appendChild(tempContainer);
+      // Execute scripts in the appended content
+      const scripts = tempContainer.querySelectorAll('script');
+      scripts.forEach(script => {
+        const newScript = document.createElement('script');
+        newScript.text = script.text;
+        document.body.appendChild(newScript);
+      });
 
     })
     .catch(error => {
