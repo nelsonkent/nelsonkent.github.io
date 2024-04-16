@@ -3,8 +3,11 @@ import json
 from collections import defaultdict
 from datetime import datetime
 import os
+from flask_cors import CORS
+
 
 app = Flask(__name__)
+CORS(app)  # Enable CORS for all routes
 
 # Function to read data from file
 def read_data_from_file(url):
@@ -33,8 +36,10 @@ def write_data_to_file(url, data):
 def add_comment(url):
     data = read_data_from_file(url)
     comment = request.json.get('comment')
+    email = request.json.get('email')
+    author = request.json.get('author')
     if comment:
-        data['comment'].append({'comment': comment, 'date': datetime.now().isoformat()})
+        data['comment'].append({'comment': comment, 'email': email, 'author': author, 'date': datetime.now().isoformat()})
         write_data_to_file(url, data)
         return jsonify({'message': 'Comment added successfully.'}), 201
     return jsonify({'error': 'Comment not provided.'}), 400
