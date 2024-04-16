@@ -34,7 +34,6 @@ scriptElement.onload = function() {
 
 // Function to include HTML content from a URL
 function includeHTML(url) {
-  debugger;
   fetch(url)
     .then(response => {
       if (!response.ok) {
