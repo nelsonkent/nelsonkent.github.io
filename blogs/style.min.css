@@ -1,9 +1,13 @@
 #headerContainer{background: black;position: fixed ;top: 0;left: 0;right: 0;z-index: 1000;height: 86px; /* Ensure the header is above other content */}
+
+.kr-layout-main {
+    /*margin: 128px auto 0 !important;*/
+}
 body{
     font-family: nyt-imperial, georgia, 'times new roman', times, serif;
     font-size: 20px;
     font-weight: 400;
-    padding-top: 85px;
+    padding-top: 85px !important;
 }
 .kr-article {
     padding-top: 0px !important;
