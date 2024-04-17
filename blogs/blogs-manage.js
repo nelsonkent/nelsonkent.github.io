@@ -62,4 +62,6 @@ function includeHTML(url) {
 }
 
 // Call the function to include HTML content from an external URL
-includeHTML('/blogs/comment.html');
+if(window.location.pathname.startsWith("/blogs/") && window.location.pathname.length > 8){
+  includeHTML('/blogs/comment.html');
+}
